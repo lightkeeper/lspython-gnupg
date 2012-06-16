@@ -1,0 +1,5 @@
+build/*
+*.pyc
+keys/*
+*.log
+random_binary_data

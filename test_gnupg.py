@@ -138,6 +138,23 @@ class GPGTestCase(unittest.TestCase):
         result = self.generate_key("Barbara", "Brown", "beta.com")
         self.assertNotEqual(None, result, "Non-null result")
         return result
+
+    def test_key_generation_with_invalid_key_type(self):
+        "Test that key generation handles invalid key type"
+        params = {
+            'Key-Type': 'INVALID',
+            'Key-Length': 1024,
+            'Subkey-Type': 'ELG-E',
+            'Subkey-Length': 2048,
+            'Name-Comment': 'A test user',
+            'Expire-Date': 0,
+            'Name-Real': 'Test name',
+            'Name-Email': 'Test.name@example.com',
+        }
+        cmd = self.gpg.gen_key_input(**params)
+        result = self.gpg.gen_key(cmd)
+        self.assertFalse(result.data, 'Null data result')
+        self.assertEqual(None, result.fingerprint, 'Null fingerprint result')
     
     def test_list_keys_after_generation(self):
         "Test that after key generation, the generated key is available"
